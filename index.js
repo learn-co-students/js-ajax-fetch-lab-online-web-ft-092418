@@ -1,5 +1,3 @@
-const token = '88b2b4ae776e01bbfaf205b532b422d09ecfca91'
-
 function getToken() {
   return '';
   //return token
