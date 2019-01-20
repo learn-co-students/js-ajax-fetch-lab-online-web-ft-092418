@@ -1,22 +1,58 @@
+const token = '88b2b4ae776e01bbfaf205b532b422d09ecfca91'
+
 function getToken() {
-  //change to your token to run in browser, but set
-  //back to '' before committing so all tests pass
   return '';
+  //return token
 }
 
 function forkRepo() {
   const repo = 'learn-co-curriculum/js-ajax-fetch-lab';
-  //use fetch to fork it!
+  fetch('https://api.github.com/repos/' + repo + '/forks', {
+    method: 'post',
+    headers: {
+      Authorization: `token ${getToken()}`
+    }
+  }).then(res => res.json())
+  .then(json => showResults(json))
+  
 }
 
 function showResults(json) {
-  //use this function to display the results from forking via the API
+  const result = `<ul><li><a href=${json.html_url}>${json.html_url}</a></li></ul>`
+  document.getElementById('results').innerHTML = result
 }
 
 function createIssue() {
-  //use this function to create an issue based on the values input in index.html
+  const data = {
+    title: document.getElementById('title').value,
+    body: document.getElementById('body').value
+  }
+
+  fetch('https://api.github.com/repos/lafesh/js-ajax-fetch-lab/issues', {
+    method: 'post',
+    headers: {
+      Authorization: `token ${getToken()}`
+    },
+    body: JSON.stringify(data) 
+  }).then(res => res.json())
+  .then(json => getIssues(json))
 }
 
 function getIssues() {
-  //once an issue is submitted, fetch all open issues to see the issues you are creating
+  fetch('https://api.github.com/repos/lafesh/js-ajax-fetch-lab/issues', {
+    method: 'get',
+    headers: {
+      Authorization: `token ${getToken()}`
+    }
+  }).then(res => res.json())
+  .then(json => showIssues(json))  
 }
+
+function showIssues(json) {
+  console.log(json)
+  const issue = json.map(a => `<ul><li><h3>${a.title}</h3>${a.body}</li></ul>`)
+  document.getElementById('issues').innerHTML = issue
+}
+
+
+
