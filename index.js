@@ -1,4 +1,3 @@
-const token = "ad0af1e7315b83b3b0af570e98b78c578896ac56"
 
 function getToken() {
   //change to your token to run in browser, but set
