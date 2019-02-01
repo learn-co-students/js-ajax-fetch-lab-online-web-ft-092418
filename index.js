@@ -1,6 +1,3 @@
-const token = "a749bd99fa6b11c718be77a7c22e4970e27823ec"
-
-
 function getToken() {
   //change to your token to run in browser, but set
   //back to '' before committing so all tests pass
@@ -24,7 +21,7 @@ function forkRepo() {
     method: 'POST',
     //body: JSON.stringify(postData),
     headers: {
-      Authorization: `token ${token}`
+      Authorization: `token ${getToken()}`
     }
   })
     .then(resp => resp.json())
@@ -53,14 +50,14 @@ function createIssue() {
     title: issueTitle,
     body: issueText
   }
-  const url = "https://api.github.com/repos/peter-g-stone/js-ajax-fetch-lab/issues"
+  const url = "https://api.github.com/repos/Peter-G-Stone/js-ajax-fetch-lab/issues"
 
   fetch(url, 
     {
     method: 'POST',
     body: JSON.stringify(postData),
     headers: {
-      Authorization: `token ${token}`
+      Authorization: `token ${getToken()}`
     }
     }
     ).then( (resp) => console.log('issues resp from createIssue', resp))
@@ -71,19 +68,34 @@ function createIssue() {
 function getIssues() {
   
   const repo = 'js-ajax-fetch-lab';
-  const url = "https://api.github.com/repos/peter-g-stone/" + repo + "/issues"
+  // const repo = 'Spoon-Knife';
+
+  const url = "https://api.github.com/repos/octocat/" + repo + "/issues"
 
   fetch(url, {
     headers: {
-      Authorization: `token ${token}`
+      Authorization: `token ${getToken()}`
     }
   })
     .then(resp => resp.json())
-    .then(json => showIssues(json))
+    .then( json => showIssues(json))
 }
 
-function showIssues(json) {
-  console.log('issues json:', json)
-  // const issuesList = `<p><a href="${json.html_url}">Linkety</a></p>`
-  // document.getElementById("results").innerHTML = issuesList
+
+
+
+function showIssues(json) {  
+  const issuesList = `<ul>${json.map( 
+    issue => 
+      '<li><p>this is my title: <strong>' +
+      issue.title +
+      '</strong></p><p> this is my id: ' +
+      issue.id +
+      '</p>'
+    )
+    .join('')}</ul>`
+
+  document.getElementById("issues").innerHTML = issuesList
+
+// this part isn't working but apparently githubs api is not working either, as per call with coach just now who confirmed my 'create issue' should be workin'
 }
